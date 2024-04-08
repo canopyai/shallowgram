@@ -1,10 +1,5 @@
-asyncio
 websockets
-
 numpy
 torch
-
-soundfile
-
 glob2
 transformers

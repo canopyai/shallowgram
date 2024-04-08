@@ -3,8 +3,6 @@ import websockets
 from websockets import exceptions
 import numpy as np
 import torch
-import soundfile as sf
-import time
 from glob import glob
 from transcribe import transcribe
 
