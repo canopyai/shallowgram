@@ -4,12 +4,15 @@ import time
 
 
 device = "cpu"
+if torch.cuda.is_available():
+    device = "cuda"
+print(f"Using device: {device}")
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-model_id = "openai/whisper-base"
+model_id = "openai/whisper-medium.en"
 
 model = AutoModelForSpeechSeq2Seq.from_pretrained(
-    model_id, torch_dtype=torch_dtype, use_safetensors=True, 
+    model_id, torch_dtype=torch_dtype, use_safetensors=True, attn_implementation="sdpa",
 )
 
 model.to(device)
@@ -25,6 +28,8 @@ pipe = pipeline(
     max_new_tokens=128,
     torch_dtype=torch_dtype,
     device=device,
+    
+    
 )
 
 
@@ -35,7 +40,7 @@ def transcribe(audio_data):
     result = pipe(audio_input)
     #print(result["text"])
     endTime = time.time()
-    print(f'duration is {endTime - startTime}')
+    print(f'duration is {endTime - startTime}: {result["text"]}')
 
 
     return result["text"]  
