@@ -9,10 +9,10 @@ if torch.cuda.is_available():
 print(f"Using device: {device}")
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-model_id = "openai/whisper-medium.en"
+model_id = "distil-whisper/distil-large-v2"
 
 model = AutoModelForSpeechSeq2Seq.from_pretrained(
-    model_id, torch_dtype=torch_dtype, use_safetensors=True, attn_implementation="sdpa",
+    model_id, torch_dtype=torch_dtype, use_safetensors=True, 
 )
 
 model.to(device)
@@ -28,8 +28,6 @@ pipe = pipeline(
     max_new_tokens=128,
     torch_dtype=torch_dtype,
     device=device,
-    
-    
 )
 
 
