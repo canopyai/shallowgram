@@ -72,7 +72,7 @@ async def audio_processor(websocket, path):
         print("Connection closed")
 
 async def main():
-    async with websockets.serve(audio_processor, "localhost", 8090):
+    async with websockets.serve(audio_processor, "0.0.0.0", 8080):
         await asyncio.Future()
 
 if __name__ == "__main__":
