@@ -1,5 +1,4 @@
 websockets
 numpy
 torch
-glob2
 transformers
