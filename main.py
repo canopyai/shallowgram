@@ -17,7 +17,7 @@ vad_model, vad_utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
                                       force_reload=True)
 (get_speech_timestamps, save_audio, read_audio, VADIterator, collect_chunks) = vad_utils
 
-vad_model = vad_model.to(device)
+# vad_model = vad_model.to(device)
 
 print("Models loaded")
 
