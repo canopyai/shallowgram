@@ -36,6 +36,7 @@ full_accumulated_audio = np.array([], dtype=np.float32)
 last_confidence = 0
 processed_time_ms = 0
 total_length_ms = 0
+confidence_threshold = 0.5
 
 
 #create a random id for each frame 
@@ -62,11 +63,11 @@ async def audio_processor(websocket, path):
 
                 processed_time_ms += (BUFFER_SIZE / 16000) * 1000
                 
-                if last_confidence > 0.1 and confidence < 0.1:
+                if last_confidence > confidence_threshold and confidence < confidence_threshold:
                     if len(accumulated_audio) > 0:  # Ensure there's audio to save
                         transcription, inference_time = transcribe(accumulated_audio)
                         
-                        await websocket.send(json.dumps([transcription, inference_time]))  # Send transcription back to client
+                        websocket.send(json.dumps([transcription, inference_time]))  # Send transcription back to client
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer

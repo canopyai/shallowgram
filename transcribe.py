@@ -40,7 +40,6 @@ pipe = pipeline(
     generate_kwargs={"assistant_model": assistant_model},
     torch_dtype=torch_dtype,
     device=device,
-
 )
 
 
