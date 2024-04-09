@@ -7,6 +7,7 @@ from glob import glob
 from transcribe import transcribe
 import json
 import torch
+from longer_than_one_word import is_longer_than_one_word
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -68,11 +69,11 @@ async def audio_processor(websocket, path):
                 if last_confidence > confidence_threshold and confidence < confidence_threshold:
                     if len(accumulated_audio) > 0:  # Ensure there's audio to save
                         transcription, inference_time = transcribe(accumulated_audio)
-                        
-                        await websocket.send(json.dumps({
-                            "transcription": transcription,
-                            "inference_time": inference_time
-                            }))  # Send transcription back to client
+                        if(is_longer_than_one_word(transcription)):
+                            await websocket.send(json.dumps({
+                                "transcription": transcription,
+                                "inference_time": inference_time
+                                }))  # Send transcription back to client
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
