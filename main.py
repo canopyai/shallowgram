@@ -37,7 +37,7 @@ last_confidence = 0
 processed_time_ms = 0
 total_length_ms = 0
 confidence_threshold = 0.5
-
+is_accumulating = False
 
 
 #create a random id for each frame 
@@ -46,15 +46,13 @@ confidence_threshold = 0.5
 
 async def audio_processor(websocket):
     global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, total_length_ms, full_accumulated_audio
-    is_accumulating = False
     try:
         async for packet in websocket:
             audio_int16 = np.frombuffer(packet, np.int16)
             audio_float32 = int2float(audio_int16)
             
             audio_buffer = np.concatenate((audio_buffer, audio_float32))
-            if is_accumulating:
-                accumulated_audio = np.concatenate((accumulated_audio, audio_float32))  # Accumulate audio data
+            accumulated_audio = np.concatenate((accumulated_audio, audio_float32))  # Accumulate audio data
             full_accumulated_audio = np.concatenate((full_accumulated_audio, audio_float32))
             packet_duration_ms = (len(audio_float32) / 16000) * 1000
             total_length_ms += packet_duration_ms
@@ -67,7 +65,6 @@ async def audio_processor(websocket):
                 processed_time_ms += (BUFFER_SIZE / 16000) * 1000
                 
                 if last_confidence > confidence_threshold and confidence < confidence_threshold:
-                    is_accumulating = False
                     if len(accumulated_audio) > 0:  # Ensure there's audio to save
                         transcription, inference_time = transcribe(accumulated_audio)
                         
@@ -75,8 +72,8 @@ async def audio_processor(websocket):
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
-                elif confidence > confidence_threshold:
-                    is_accumulating = True
+                elif last_confidence < confidence_threshold and confidence > confidence_threshold:
+                    print("Start accumulating")
 
                 last_confidence = confidence
                 audio_buffer = audio_buffer[BUFFER_SIZE:]
