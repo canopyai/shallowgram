@@ -69,12 +69,12 @@ async def audio_processor(websocket, path):
                     if len(accumulated_audio) > 0:  # Ensure there's audio to save
                         transcription, inference_time = transcribe(accumulated_audio)
                         
-                for client in clients:  # Iterate over connected clients
-                    if client != websocket:  # Optional: Don't send the message to the sender
-                        try:
-                            await client.send(json.dumps([transcription, inference_time]))  
-                        except exceptions.ConnectionClosed:  
-                            clients.remove(client)                      
+                        for client in clients:  # Iterate over connected clients
+                            if client != websocket:  # Optional: Don't send the message to the sender
+                                try:
+                                    await client.send(json.dumps([transcription, inference_time]))  
+                                except exceptions.ConnectionClosed:  
+                                    clients.remove(client)                      
                
                 accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
 
@@ -85,7 +85,7 @@ async def audio_processor(websocket, path):
         print("Connection closed")
 
 async def main():
-    async with websockets.serve(audio_processor, "0.0.0.0", 8080):
+    async with websockets.serve(audio_processor, "0.0.0.0", 8090):
         await asyncio.Future()
 
 if __name__ == "__main__":
