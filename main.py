@@ -69,14 +69,10 @@ async def audio_processor(websocket, path):
                     if len(accumulated_audio) > 0:  # Ensure there's audio to save
                         transcription, inference_time = transcribe(accumulated_audio)
                         
-                        for client in clients:  # Iterate over connected clients
-                            if client != websocket:  # Optional: Don't send the message to the sender
-                                try:
-                                    await client.send(json.dumps([transcription, inference_time]))  
-                                except exceptions.ConnectionClosed:  
-                                    clients.remove(client)                      
+                        await websocket.send(json.dumps([transcription, inference_time]))  # Send transcription back to client
+                        # await websocket.send(fulltranscription)
                
-                accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
+                        accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
 
                 last_confidence = confidence
                 audio_buffer = audio_buffer[BUFFER_SIZE:]
