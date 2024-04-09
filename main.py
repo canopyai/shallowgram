@@ -17,7 +17,7 @@ vad_model, vad_utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
                                       force_reload=True)
 (get_speech_timestamps, save_audio, read_audio, VADIterator, collect_chunks) = vad_utils
 
-# vad_model = vad_model.to(device)
+vad_model = vad_model.to(device)
 
 print("Models loaded")
 
@@ -77,7 +77,7 @@ async def audio_processor(websocket, path):
         print("Connection closed")
 
 async def main():
-    async with websockets.serve(audio_processor, "localhost", 8080):
+    async with websockets.serve(audio_processor, "0.0.0.0", 8080):
         await asyncio.Future()
 
 if __name__ == "__main__":
