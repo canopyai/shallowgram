@@ -37,14 +37,13 @@ last_confidence = 0
 processed_time_ms = 0
 total_length_ms = 0
 confidence_threshold = 0.5
-is_accumulating = False
 
 
 #create a random id for each frame 
 # call the transcribe function and the text attached to that id should be processed 
 
 
-async def audio_processor(websocket):
+async def audio_processor(websocket, path):
     global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, total_length_ms, full_accumulated_audio
     try:
         async for packet in websocket:
@@ -72,11 +71,6 @@ async def audio_processor(websocket):
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
-                        
-                elif last_confidence < confidence_threshold and confidence > confidence_threshold:
-                    accumulated_audio = np.array([], dtype=np.float32)
-                    accumulated_audio = np.concatenate((accumulated_audio, audio_float32)) 
-                    await websocket.send("vad start")
 
                 last_confidence = confidence
                 audio_buffer = audio_buffer[BUFFER_SIZE:]
