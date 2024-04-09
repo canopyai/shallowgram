@@ -9,6 +9,7 @@ import json
 import torch
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+should_accumulate = False
 
 
 
@@ -50,7 +51,8 @@ async def audio_processor(websocket, path):
             audio_float32 = int2float(audio_int16)
             
             audio_buffer = np.concatenate((audio_buffer, audio_float32))
-            accumulated_audio = np.concatenate((accumulated_audio, audio_float32))  # Accumulate audio data
+            if should_accumulate:
+                accumulated_audio = np.concatenate((accumulated_audio, audio_float32))  # Accumulate audio data
             full_accumulated_audio = np.concatenate((full_accumulated_audio, audio_float32))
             packet_duration_ms = (len(audio_float32) / 16000) * 1000
             total_length_ms += packet_duration_ms
@@ -70,7 +72,9 @@ async def audio_processor(websocket, path):
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
-
+                elif last_confidence < 0.1 and confidence > 0.1:
+                    should_accumulate = True
+                    accumulated_audio = np.concatenate((accumulated_audio, audio_float32))
                 last_confidence = confidence
                 audio_buffer = audio_buffer[BUFFER_SIZE:]
 

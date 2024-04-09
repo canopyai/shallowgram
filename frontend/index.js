@@ -2,7 +2,7 @@ document.getElementById('start').addEventListener('click', startRecording);
 
 async function startRecording() {
     // Set the WebSocket route
-    const route = 'ws://localhost:8080';
+    const route = 'ws://34.141.221.82:8080';
 
     // Create a new WebSocket connection
     const socket = new WebSocket(route);
@@ -15,7 +15,7 @@ async function startRecording() {
         type: 'audio',
         mimeType: 'audio/wav',
         recorderType: RecordRTC.StereoAudioRecorder,
-        timeSlice: 250,
+        timeSlice: 20,
         desiredSampRate: 16000,
         numberOfAudioChannels: 1,
         bufferSize: 16384,
