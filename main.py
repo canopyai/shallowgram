@@ -72,8 +72,11 @@ async def audio_processor(websocket):
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
+                        
                 elif last_confidence < confidence_threshold and confidence > confidence_threshold:
-                    print("Start accumulating")
+                    accumulated_audio = np.array([], dtype=np.float32)
+                    accumulated_audio = np.concatenate((accumulated_audio, audio_float32)) 
+                    await websocket.send("vad start")
 
                 last_confidence = confidence
                 audio_buffer = audio_buffer[BUFFER_SIZE:]
