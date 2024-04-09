@@ -57,6 +57,7 @@ async def audio_processor(websocket, path):
             
             while len(audio_buffer) >= BUFFER_SIZE:
                 tensor_audio = torch.from_numpy(audio_buffer[:BUFFER_SIZE]).unsqueeze(0)
+                tensor_audio = tensor_audio.to(device)
                 confidence = vad_model(tensor_audio, 16000).item()  # Use the VAD model for voice activity detection
 
                 processed_time_ms += (BUFFER_SIZE / 16000) * 1000
