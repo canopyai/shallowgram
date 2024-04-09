@@ -37,7 +37,7 @@ last_confidence = 0
 processed_time_ms = 0
 total_length_ms = 0
 confidence_threshold = 0.5
-is_accumulating = False
+
 
 
 #create a random id for each frame 
@@ -46,6 +46,7 @@ is_accumulating = False
 
 async def audio_processor(websocket):
     global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, total_length_ms, full_accumulated_audio
+    is_accumulating = False
     try:
         async for packet in websocket:
             audio_int16 = np.frombuffer(packet, np.int16)
@@ -76,7 +77,7 @@ async def audio_processor(websocket):
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
                 elif confidence > confidence_threshold:
                     is_accumulating = True
-                    
+
                 last_confidence = confidence
                 audio_buffer = audio_buffer[BUFFER_SIZE:]
 
