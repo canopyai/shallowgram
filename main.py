@@ -9,7 +9,7 @@ import json
 import torch
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-should_accumulate = False
+
 
 
 
@@ -44,7 +44,7 @@ total_length_ms = 0
 
 
 async def audio_processor(websocket, path):
-    global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, total_length_ms, full_accumulated_audio
+    global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, total_length_ms, full_accumulated_audio, should_accumulate
     try:
         async for packet in websocket:
             audio_int16 = np.frombuffer(packet, np.int16)
