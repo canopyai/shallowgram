@@ -40,6 +40,7 @@ pipe = pipeline(
     generate_kwargs={"assistant_model": assistant_model},
     torch_dtype=torch_dtype,
     device=device,
+
 )
 
 
@@ -53,4 +54,4 @@ def transcribe(audio_data):
     print(f'duration is {endTime - startTime}: {result["text"]}')
 
 
-    return result["text"]  
+    return result["text"], endTime - startTime 

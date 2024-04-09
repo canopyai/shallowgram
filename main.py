@@ -5,8 +5,10 @@ import numpy as np
 import torch
 from glob import glob
 from transcribe import transcribe
+import json
+import torch
 
-device = torch.device('cpu')  
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 
@@ -14,6 +16,8 @@ vad_model, vad_utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
                                       model='silero_vad',
                                       force_reload=True)
 (get_speech_timestamps, save_audio, read_audio, VADIterator, collect_chunks) = vad_utils
+
+vad_model = vad_model.to(device)
 
 print("Models loaded")
 
@@ -34,7 +38,8 @@ processed_time_ms = 0
 total_length_ms = 0
 
 
-
+#create a random id for each frame 
+# call the transcribe function and the text attached to that id should be processed 
 
 
 async def audio_processor(websocket, path):
@@ -58,9 +63,9 @@ async def audio_processor(websocket, path):
                 
                 if last_confidence > 0.1 and confidence < 0.1:
                     if len(accumulated_audio) > 0:  # Ensure there's audio to save
-                        transcription = transcribe(accumulated_audio)
+                        transcription, inference_time = transcribe(accumulated_audio)
                         
-                        await websocket.send(transcription)  # Send transcription back to client
+                        await websocket.send(json.dumps([transcription, inference_time]))  # Send transcription back to client
                         # await websocket.send(fulltranscription)
                
                         accumulated_audio = np.array([], dtype=np.float32)  # Reset accumulation buffer
@@ -72,7 +77,7 @@ async def audio_processor(websocket, path):
         print("Connection closed")
 
 async def main():
-    async with websockets.serve(audio_processor, "0.0.0.0", 8080):
+    async with websockets.serve(audio_processor, "localhost", 8080):
         await asyncio.Future()
 
 if __name__ == "__main__":
