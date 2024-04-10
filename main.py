@@ -83,6 +83,7 @@ async def audio_processor(websocket, path):
                         transcription, inference_time = transcribe(
                             accumulated_audio)
                         if (is_longer_than_one_word(transcription)):
+                        
                             await websocket.send(json.dumps({
                                 "message_type": "transcription",
                                 "data": {
