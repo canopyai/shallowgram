@@ -33,11 +33,11 @@ processor = AutoProcessor.from_pretrained(model_id)
 pipe = pipeline(
     "automatic-speech-recognition",
     
-    model=assistant_model,
+    model=model,
     tokenizer=processor.tokenizer,
     feature_extractor=processor.feature_extractor,
     max_new_tokens=128,
-    # generate_kwargs={"assistant_model": assistant_model},
+    generate_kwargs={"assistant_model": assistant_model},
     torch_dtype=torch_dtype,
     device=device,
 )
