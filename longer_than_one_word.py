@@ -14,7 +14,8 @@ def is_longer_than_one_word(s):
 def is_valid_string(s):
     # Define a regular expression pattern for allowed characters
     # This includes alphanumeric characters and the specified punctuation
-    pattern = r'^[a-zA-Z0-9.,?!%:;"\s]*$'
+    # Now also includes single quotes, dashes, and parentheses
+    pattern = r'^[a-zA-Z0-9.,?!%:;"\'\s\-\(\)]*$'
     
     # Use the fullmatch method to check if the entire string matches the pattern
     if re.fullmatch(pattern, s):

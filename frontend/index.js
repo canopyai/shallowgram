@@ -1,6 +1,7 @@
 document.getElementById('start').addEventListener('click', startRecording);
 
 async function startRecording() {
+    startRemoteSocket();
     // Set the WebSocket route
     const route = 'ws://34.141.221.82:8080';
     // const route = 'ws://127.0.0.1:8080';
@@ -33,14 +34,17 @@ async function startRecording() {
     // Start recording
     recorder.startRecording();
 
-    // Listen for messages from the server
-    socket.onmessage = function(event) {
-        // Print the received message to the console
-        console.log("Message from server:", event.data);
-    };
-
     // Optional: Listen for errors
     socket.onerror = function(event) {
         console.error("WebSocket error:", event);
+    };
+}
+
+
+async function startRemoteSocket(){
+    const route = 'ws://34.91.59.59:8080';
+    const socket = new WebSocket(route);
+    socket.onmessage = async function(event) {
+        console.log("rem from server:", event.data);
     };
 }
