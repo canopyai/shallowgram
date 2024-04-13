@@ -44,7 +44,8 @@ pipe = pipeline(
 
 
 def transcribe(audio_data):
-    tensor_audio_data = torch.from_numpy(audio_data)
+    # return "hello", 100
+    # tensor_audio_data = torch.from_numpy(audio_data)
     startTime = time.time()
     audio_input = {"array": audio_data, "sampling_rate": 16000}
     result = pipe(audio_input)

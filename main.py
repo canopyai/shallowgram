@@ -8,6 +8,7 @@ from transcribe import transcribe
 import json
 import torch
 from longer_than_one_word import is_longer_than_one_word
+from get_emotion_data import get_emotion_data
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -38,9 +39,9 @@ accumulated_audio = np.array([], dtype=np.float32)
 full_accumulated_audio = np.array([], dtype=np.float32)
 last_confidence = 0
 processed_time_ms = 0
-total_length_ms = 0
 confidence_threshold = 0.1
 clients = set()
+
 
 
 # create a random id for each frame
@@ -50,21 +51,22 @@ server_uri = "ws://34.91.59.59:8080"
 # server_uri = "ws://192.76.8.94:8080"
 
 async def audio_processor(websocket, path):
-    global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, total_length_ms, full_accumulated_audio
+    global audio_buffer, accumulated_audio, last_confidence, processed_time_ms, full_accumulated_audio, is_speaking, last_frame, is_new_packet
+    is_speaking = False
+    is_new_packet = False
     clients.add(websocket)
     try:
         async with websockets.connect(server_uri) as fsocket:
             async for packet in websocket:
                 audio_int16 = np.frombuffer(packet, np.int16)
                 audio_float32 = int2float(audio_int16)
+                last_frame = audio_float32
 
                 audio_buffer = np.concatenate((audio_buffer, audio_float32))
-                accumulated_audio = np.concatenate(
-                    (accumulated_audio, audio_float32))  # Accumulate audio data
-                full_accumulated_audio = np.concatenate(
-                    (full_accumulated_audio, audio_float32))
-                packet_duration_ms = (len(audio_float32) / 16000) * 1000
-                total_length_ms += packet_duration_ms
+                is_new_packet = True
+  
+
+         
 
                 while len(audio_buffer) >= BUFFER_SIZE:
                     tensor_audio = torch.from_numpy(
@@ -72,8 +74,19 @@ async def audio_processor(websocket, path):
                     tensor_audio = tensor_audio.to(device)
                     # Use the VAD model for voice activity detection
                     confidence = vad_model(tensor_audio, 16000).item()
-
                     processed_time_ms += (BUFFER_SIZE / 16000) * 1000
+
+                    if(confidence> confidence_threshold):
+                        is_speaking = True
+                    else:
+                        is_speaking = False
+
+                    if(is_speaking and is_new_packet):
+                        is_new_packet = False
+                        accumulated_audio = np.concatenate(
+                            (accumulated_audio, audio_float32))  # Accumulate audio data
+                        full_accumulated_audio = np.concatenate(
+                            (full_accumulated_audio, audio_float32))
 
                     if last_confidence > confidence_threshold and confidence < confidence_threshold:
                         await fsocket.send(json.dumps({
@@ -85,6 +98,13 @@ async def audio_processor(websocket, path):
                         if len(accumulated_audio) > 0:  # Ensure there's audio to save
                             transcription, inference_time = transcribe(
                                 accumulated_audio)
+                            
+                            emotion_data = get_emotion_data(accumulated_audio)
+                            # print(emotion_data)
+                            
+
+
+
                             if (is_longer_than_one_word(transcription)):
                             
                                 await fsocket.send(json.dumps({
