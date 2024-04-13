@@ -7,8 +7,9 @@ from glob import glob
 from transcribe import transcribe
 import json
 import torch
+from concurrent.futures import ThreadPoolExecutor
 from longer_than_one_word import is_longer_than_one_word
-from get_emotion_data import get_emotion_data
+from audio_emotion.get_emotion_data import get_emotion_data
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -96,11 +97,20 @@ async def audio_processor(websocket, path):
                             }
                         }))
                         if len(accumulated_audio) > 0:  # Ensure there's audio to save
-                            transcription, inference_time = transcribe(
-                                accumulated_audio)
+
+
+                            with ThreadPoolExecutor(max_workers=2) as executor:
+                                future_emotion = executor.submit(get_emotion_data, accumulated_audio)
+                                future_transcribe = executor.submit(transcribe, accumulated_audio)
+
+                                emotion_data = future_emotion.result()
+                                transcription, inference_time = future_transcribe.result()
+
+                                print("Emotion Data:", emotion_data)
+                                print("Transcription:", transcription)
+                                print("Inference Time:", inference_time)
                             
-                            emotion_data = get_emotion_data(accumulated_audio)
-                            # print(emotion_data)
+               
                             
 
 
@@ -111,7 +121,8 @@ async def audio_processor(websocket, path):
                                     "messageType": "transcription",
                                     "data": {
                                         "transcription": transcription,
-                                        "inference_time": inference_time
+                                        "inference_time": inference_time, 
+                                        "emotion_data": emotion_data
                                     }
 
                                 }))  # Send transcription back to client
