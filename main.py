@@ -8,7 +8,7 @@ from transcribe import transcribe
 import json
 import torch
 from concurrent.futures import ThreadPoolExecutor
-from longer_than_one_word import is_longer_than_one_word
+from longer_than_one_word import is_longer_than_one_word, is_valid_string
 from audio_emotion.get_emotion_data import get_emotion_data
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -115,7 +115,7 @@ async def audio_processor(websocket, path):
 
 
 
-                            if (is_longer_than_one_word(transcription)):
+                            if (is_longer_than_one_word(transcription) and is_valid_string(transcription) ):
                             
                                 await fsocket.send(json.dumps({
                                     "messageType": "transcription",
