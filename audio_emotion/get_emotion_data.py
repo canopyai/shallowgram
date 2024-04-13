@@ -5,7 +5,7 @@ import io
 import time
 
 
-endpoint = "http://34.90.83.54:8080"
+endpoint = "http://34.141.193.219:8080"
 
 
 def get_emotion_data(numpy_array):
