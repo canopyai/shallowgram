@@ -1,17 +1,55 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.min.js"></script>
     <title>Shallogram Frontend</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-    <div id="start"> 
-        Start
-        </div>  
+
+    <div id="main">
+        <div id="start">
+            Start
+        </div>
+    </div>
+
+
+    <div id="empathy-boxes">
+        <div class="empathy-controls"> 
+            <div class="empathy-controls-title"> 
+                <div class="emp-title"> Empathy </div>
+            </div>
+           
+            <div class="emp-pill"> 
+                <div class="pill selected-pill" id="pill1"> </div>
+                <div class="pill" id="pill2"> </div>
+                <div class="pill" id="pill3"> </div>
+
+                   
+            </div>
+        </div>
+        <div class="toggle-option"> 
+            <div class="toggle-button" id="toggle-aud"> + Show Audio Empathy </div>
+            <div class="toggle-button"> + Show Suggested Tone </div>
+
+        </div>
+        <div id="boxes-holder">
+   
+        </div>
+
+
+    </div>
+
 
     <script src="index.js"></script>
 </body>
+
 </html>
