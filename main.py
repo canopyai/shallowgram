@@ -127,10 +127,18 @@ async def audio_processor(websocket, path):
                                         "emotion_data": emotion_data
                                     }
 
-                                }))  # Send transcription back to client
-                            # await websocket.send(fulltranscription)
+                                }))  
+                            else:
+                                await fsocket.send(json.dumps({
+                                    "messageType": "transcription",
+                                    "data": {
+                                        "transcription": "Reply to the previous messages",
+                                        "inference_time": inference_time, 
+                                        "emotion_data": emotion_data
+                                    }
 
-                            # Reset accumulation buffer
+                                })) 
+
                             accumulated_audio = np.array([], dtype=np.float32)
 
                     elif last_confidence < confidence_threshold and confidence > confidence_threshold:
