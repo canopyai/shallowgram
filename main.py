@@ -98,7 +98,7 @@ async def audio_processor(websocket, path):
                                 "vad_type":"end", 
                             }
                         }))
-                        if len(accumulated_audio) > 0:  # Ensure there's audio to save
+                        if len(accumulated_audio) > 0:
 
 
                             with ThreadPoolExecutor(max_workers=2) as executor:
@@ -140,6 +140,9 @@ async def audio_processor(websocket, path):
                                 })) 
 
                             accumulated_audio = np.array([], dtype=np.float32)
+
+                        else:
+                            print("No audio data to process")
 
                     elif last_confidence < confidence_threshold and confidence > confidence_threshold:
                         print("sending start vad")
