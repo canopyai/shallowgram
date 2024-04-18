@@ -132,9 +132,9 @@ async def audio_processor(websocket, path):
                                 await fsocket.send(json.dumps({
                                     "messageType": "transcription",
                                     "data": {
-                                        "transcription": "Reply to the previous messages",
-                                        "inference_time": inference_time, 
-                                        "emotion_data": emotion_data
+                                        "transcription": "",
+                                        "isEmpty": True,
+
                                     }
 
                                 })) 
@@ -142,7 +142,13 @@ async def audio_processor(websocket, path):
                             accumulated_audio = np.array([], dtype=np.float32)
 
                         else:
-                            print("No audio data to process")
+                            await fsocket.send(json.dumps({
+                                    "messageType": "transcription",
+                                    "data": {
+                                        "transcription": "",
+                                        "isEmpty": True,
+                                    }
+                                }))
 
                     elif last_confidence < confidence_threshold and confidence > confidence_threshold:
                         print("sending start vad")
