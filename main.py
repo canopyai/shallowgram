@@ -48,7 +48,7 @@ clients = set()
 # create a random id for each frame
 # call the transcribe function and the text attached to that id should be processed
 
-server_uri = "ws://34.91.59.59:8080"
+server_uri = "ws://34.141.221.82:8080"
 # server_uri = "ws://192.76.8.94:8080"
 
 async def audio_processor(websocket, path):
@@ -59,6 +59,8 @@ async def audio_processor(websocket, path):
     try:
         async with websockets.connect(server_uri) as fsocket:
             async for packet in websocket:
+                if packet[:4].decode('utf-8') == "RIFF":
+                    packet = packet[44:]
                 audio_int16 = np.frombuffer(packet, np.int16)
                 audio_float32 = int2float(audio_int16)
                 last_frame = audio_float32

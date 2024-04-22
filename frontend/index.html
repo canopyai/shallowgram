@@ -39,11 +39,53 @@
         <div class="toggle-option"> 
             <div class="toggle-button" id="toggle-aud"> + Show Audio Empathy </div>
             <div class="toggle-button"> + Show Suggested Tone </div>
+            <div class="toggle-button" id="toggle-lat"> + Show Latency </div>
 
+        </div>
+        <div id="latencies">
+            <div class="latencies-ttl">Latencies</div>
+            <div class="metric-box"> 
+                <div class="metric-title bolder"> Total Latency* </div>
+                <div class="latency-value bolder" id="tot-lat"> 0ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> Background Removal Latency </div>
+                <div class="latency-value medium-light"> 5 ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> Transcription Latency </div>
+                <div class="latency-value medium-light" id="trans-lat"> 0ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> Intonation Encoder Latency </div>
+                <div class="latency-value medium-light" id="aud-lat"> 0ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> Empathy Model(s) Latency </div>
+                <div class="latency-value medium-light" id="emp-lat"> 0ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> LLM Latency </div>
+                <div class="latency-value medium-light" id="llm-lat"> 0ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> TTS Latency</div>
+                <div class="latency-value medium-light" id="tts-lat"> 0ms </div>
+            </div>
+            <div class="metric-box"> 
+                <div class="metric-title medium-light"> Animation Model(s) Latency</div>
+                <div class="latency-value medium-light" id="ani-lat"> 0ms </div>
+            </div>
+
+            <div class="metric-box light small"> 
+                * Total latency is NOT the sum of the other latencies. Stuff runs in parellel. Measured from VAD detection to response.
+            </div> 
         </div>
         <div id="boxes-holder">
    
         </div>
+
+ 
 
 
     </div>

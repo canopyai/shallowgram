@@ -168,3 +168,31 @@ body {
 .toggle-button:active{
     transform: scale(0.99);
 }
+
+.latencies-ttl{
+    padding-left: 10px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.metric-box{
+    display: flex;
+    width: calc(100% - 20px);
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-left: 10px;
+
+}
+
+.medium-light{
+    font-weight: 300;
+}
+.light{
+     font-weight: 200;
+} 
+.small{
+    font-size: 0.8em;
+}
+.bolder{
+    font-weight: 500;
+}
