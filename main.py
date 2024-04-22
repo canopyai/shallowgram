@@ -59,8 +59,9 @@ async def audio_processor(websocket, path):
     try:
         async with websockets.connect(server_uri) as fsocket:
             async for packet in websocket:
-                if packet[:4].decode('utf-8') == "RIFF":
-                    packet = packet[44:]
+                print(packet)
+                # if packet[:4].decode('utf-8') == "RIFF":
+                #     packet = packet[44:]
                 audio_int16 = np.frombuffer(packet, np.int16)
                 audio_float32 = int2float(audio_int16)
                 last_frame = audio_float32
