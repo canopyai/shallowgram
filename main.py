@@ -48,7 +48,7 @@ clients = set()
 # create a random id for each frame
 # call the transcribe function and the text attached to that id should be processed
 
-server_uri = "ws://34.91.59.59:8080"
+server_uri = "ws://34.91.59.59:8080" 
 
 
 async def audio_processor(websocket, path):
