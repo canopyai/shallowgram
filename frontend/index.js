@@ -27,7 +27,7 @@ document.getElementById("toggle-aud").addEventListener('click', function () {
 })
 
 async function startRecording() {
-    startRemoteSocket();
+    // startRemoteSocket();
     // Set the WebSocket route
     const route = 'ws://34.141.221.82:8080';
     // const route = 'ws://127.0.0.1:8080';
