@@ -43,7 +43,7 @@ async function startRecording() {
         type: 'audio',
         mimeType: 'audio/wav',
         recorderType: RecordRTC.StereoAudioRecorder,
-        timeSlice: 20,
+        timeSlice: 200,
         desiredSampRate: 16000,
         numberOfAudioChannels: 1,
         bufferSize: 16384,
