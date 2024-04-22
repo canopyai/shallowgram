@@ -46,8 +46,8 @@ async function startRecording() {
         timeSlice: 20,
         desiredSampRate: 16000,
         numberOfAudioChannels: 1,
-        // bufferSize: 16384,
-        // audioBitsPerSecond: 128000,
+        bufferSize: 16384,
+        audioBitsPerSecond: 128000,
         ondataavailable: async (blob) => {
             if (socket && socket.readyState === WebSocket.OPEN) {
                 const arrayBuffer = await blob.arrayBuffer();
