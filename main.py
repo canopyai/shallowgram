@@ -40,7 +40,7 @@ accumulated_audio = np.array([], dtype=np.float32)
 full_accumulated_audio = np.array([], dtype=np.float32)
 last_confidence = 0
 processed_time_ms = 0
-confidence_threshold = 0.1
+confidence_threshold = 0.5
 clients = set()
 
 
