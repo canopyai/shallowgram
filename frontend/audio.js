@@ -54,54 +54,54 @@ scene.add(pointLight);
 
 
 // 2. Load the GLB Model
-const loader = new GLTFLoader();
+// const loader = new GLTFLoader();
 // Assuming loader.load() has already been called
-loader.load('dd1.glb', function (gltf) {
+// loader.load('dd1.glb', function (gltf) {
 
-    const object = gltf.scene;
-    meshes = object.children[0].children
-    const mesh = meshes[0]; // Example: working with the first mesh
+//     const object = gltf.scene;
+//     meshes = object.children[0].children
+//     const mesh = meshes[0]; // Example: working with the first mesh
 
-    if (mesh.morphTargetDictionary) {
-        // Iterate over the morphTargetDictionary to print names and indices
-        for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
-            console.log(`${name}: ${index}`);
-        }
-    } else {
-        console.log('No morph targets found on this mesh.');
-    }
-    scene.add(object);
+//     if (mesh.morphTargetDictionary) {
+//         // Iterate over the morphTargetDictionary to print names and indices
+//         for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
+//             console.log(`${name}: ${index}`);
+//         }
+//     } else {
+//         console.log('No morph targets found on this mesh.');
+//     }
+//     scene.add(object);
 
 
-    // Compute the bounding box after adding the model to the scene
-    const box = new THREE.Box3().setFromObject(object);
-    const center = box.getCenter(new THREE.Vector3());
+//     // Compute the bounding box after adding the model to the scene
+//     const box = new THREE.Box3().setFromObject(object);
+//     const center = box.getCenter(new THREE.Vector3());
 
-    // Move the camera to focus on the center of the bounding box
-    camera.position.x = center.x;
-    camera.position.y = center.y;
-    // Adjust the Z position based on the size of the model for a good view distance
-    const size = box.getSize(new THREE.Vector3());
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const fov = camera.fov * (Math.PI / 180);
-    const cameraZ = Math.abs(maxDim / 4 * Math.tan(fov * 2));
+//     // Move the camera to focus on the center of the bounding box
+//     camera.position.x = center.x;
+//     camera.position.y = center.y;
+//     // Adjust the Z position based on the size of the model for a good view distance
+//     const size = box.getSize(new THREE.Vector3());
+//     const maxDim = Math.max(size.x, size.y, size.z);
+//     const fov = camera.fov * (Math.PI / 180);
+//     const cameraZ = Math.abs(maxDim / 4 * Math.tan(fov * 2));
 
-    // Perhaps a bit far back
-    camera.position.z = 30; // Adjust the 1.5 as needed
+//     // Perhaps a bit far back
+//     camera.position.z = 30; // Adjust the 1.5 as needed
 
-    // Update the camera's matrices
-    camera.updateProjectionMatrix();
+//     // Update the camera's matrices
+//     camera.updateProjectionMatrix();
 
-    // Point the camera to the center of the model
-    camera.lookAt(center);
+//     // Point the camera to the center of the model
+//     camera.lookAt(center);
 
-    // Update controls to rotate around the center of the model
-    controls.target.set(center.x, center.y, center.z);
-    controls.update();
+//     // Update controls to rotate around the center of the model
+//     controls.target.set(center.x, center.y, center.z);
+//     controls.update();
 
-}, undefined, function (error) {
-    console.error(error);
-});
+// }, undefined, function (error) {
+//     console.error(error);
+// });
 
 
 // 3. Add OrbitControls
@@ -495,4 +495,12 @@ document.getElementById("toggle-lat").addEventListener("click", () => {
         document.getElementById("latencies").style.display = 'block';
     } else {
         document.getElementById("toggle-lat").innerHTML = "+ Show Latency";
-        document.getElementById("latencies").style.display = 'n
+        document.getElementById("latencies").style.display = 'none';
+    }
+})
+
+
+
+
+
+
