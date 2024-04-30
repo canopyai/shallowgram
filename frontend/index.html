@@ -3,40 +3,60 @@
 
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
     <meta charset="UTF-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.1/RecordRTC.min.js"></script>
     <title>Shallogram Frontend</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.161.0/build/three.module.js"
+      }
+    }
+    </script>
+
 
 <body>
 
 
     <div id="main">
-        <div id="start">
+        <div id="vid-el-1">
+            <div class="video-container">
+                <div class="video-stream video-cont">
+                    <video id="videoElement" height="300px" width="500px" autoplay></video>
+                </div>
+                <div class="video-stream" id="canopy-rend"> </div>
+            </div>
+
+        </div>
+        <div id="start" class="hiddean">
             Start
         </div>
+
     </div>
 
 
     <div id="empathy-boxes">
-        <div class="empathy-controls"> 
-            <div class="empathy-controls-title"> 
+        <div class="empathy-controls">
+            <div class="empathy-controls-title">
                 <div class="emp-title"> Empathy </div>
             </div>
-           
-            <div class="emp-pill"> 
+
+            <div class="emp-pill">
                 <div class="pill selected-pill" id="pill1"> </div>
                 <div class="pill" id="pill2"> </div>
                 <div class="pill" id="pill3"> </div>
 
-                   
+
             </div>
         </div>
-        <div class="toggle-option"> 
+        <div class="toggle-option">
             <div class="toggle-button" id="toggle-aud"> + Show Audio Empathy </div>
             <div class="toggle-button"> + Show Suggested Tone </div>
             <div class="toggle-button" id="toggle-lat"> + Show Latency </div>
@@ -44,54 +64,55 @@
         </div>
         <div id="latencies">
             <div class="latencies-ttl">Latencies</div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title bolder"> Total Latency* </div>
                 <div class="latency-value bolder" id="tot-lat"> 0ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> Background Removal Latency </div>
                 <div class="latency-value medium-light"> 5 ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> Transcription Latency </div>
                 <div class="latency-value medium-light" id="trans-lat"> 0ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> Intonation Encoder Latency </div>
                 <div class="latency-value medium-light" id="aud-lat"> 0ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> Empathy Model(s) Latency </div>
                 <div class="latency-value medium-light" id="emp-lat"> 0ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> LLM Latency </div>
                 <div class="latency-value medium-light" id="llm-lat"> 0ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> TTS Latency</div>
                 <div class="latency-value medium-light" id="tts-lat"> 0ms </div>
             </div>
-            <div class="metric-box"> 
+            <div class="metric-box">
                 <div class="metric-title medium-light"> Animation Model(s) Latency</div>
                 <div class="latency-value medium-light" id="ani-lat"> 0ms </div>
             </div>
 
-            <div class="metric-box light small"> 
-                * Total latency is NOT the sum of the other latencies. Stuff runs in parellel. Measured from VAD detection to response.
-            </div> 
+            <div class="metric-box light small">
+                * Total latency is NOT the sum of the other latencies. Stuff runs in parellel. Measured from VAD
+                detection to response.
+            </div>
         </div>
         <div id="boxes-holder">
-   
+
         </div>
 
- 
+
 
 
     </div>
 
 
-    <script src="index.js"></script>
+    <script src="audio.js" type="module"></script>
 </body>
 
 </html>

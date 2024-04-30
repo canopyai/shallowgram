@@ -17,7 +17,7 @@ body {
     color: white;
     height: 20px;
     align-items: center;
-    display: flex;
+
     justify-content: center;
 
 
@@ -96,6 +96,7 @@ body {
     display: flex;
     height: 100vh;
     align-items: center;
+    flex-direction: column;
 }
 
 .empathy-controls{
@@ -195,4 +196,41 @@ body {
 }
 .bolder{
     font-weight: 500;
+}
+
+.video-stream{
+    height: 400px;
+    width: 550px;
+    background-color: black;
+    border-radius: 10px;
+    cursor: pointer;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.video-container{
+    width: 1120px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.hidden{
+    display: none;
+}
+
+.video-cont {
+    position: relative; /* Positioning context for video */
+    overflow: hidden;
+}
+
+#videoElement {
+    position: absolute; /* Position absolutely within .video-stream */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
 }
