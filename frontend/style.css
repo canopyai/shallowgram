@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #f1f1f1;
+    background-color: #F7F1E5;
     height: 100vh;
     font-family: nunito;
     width: 100vw;
@@ -10,7 +10,7 @@ body {
     background-color: #703CF0;
     color: white;
     padding: 10px;
-    width: 100px;
+    width: 250px;
     text-align: center;
     cursor: pointer;
     border-radius: 2px;
@@ -19,6 +19,11 @@ body {
     align-items: center;
 
     justify-content: center;
+
+    position: absolute;
+    right: 35px;
+    bottom: 30px;
+    border-radius: 10px;
 
 
 }
@@ -29,7 +34,7 @@ body {
 
 #radar-holder{
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     right: 30px;
     width: 300px;
     height: 300px;
@@ -41,7 +46,9 @@ body {
 
 #empathy-boxes{
     position: absolute;
-    background-color: white;
+    background-color: #f5f2ed;
+    border: white solid 2px;
+
     padding: 10x;
     right: 20px;
     top: 20px;
@@ -96,7 +103,8 @@ body {
     display: flex;
     height: 100vh;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
+    
 }
 
 .empathy-controls{
@@ -120,7 +128,7 @@ body {
 }
 
 .pill{
-    width: 91px;
+    width: 92px;
     background-color: #e7e7e7;
     cursor: pointer;
 
@@ -197,17 +205,42 @@ body {
 .bolder{
     font-weight: 500;
 }
-
-.video-stream{
+.video-stream-big{
+    width: 600px;
     height: 400px;
-    width: 550px;
-    background-color: black;
-    border-radius: 10px;
-    cursor: pointer;
-    object-fit: cover;
-    overflow: hidden;
+    border-radius: 20px;
+    scale: 0.75;
+
 }
 
+iframe {
+    position: absolute;
+    left: -100px;
+    bottom: -175px;    /* Adjusts the vertical position to start showing from y = 100px */
+    height: 400px;  /* Actual height of the iframe content */
+    zoom: 6;
+}
+
+.video-stream{
+
+    width: 400px;
+    /* height: 300px; */
+    border-radius: 20px;
+    /* position: fixed; */
+    left: 45px;
+    margin-top: 10px;
+    margin-right: 10px;
+    object-fit: cover;
+    overflow: hidden;
+    z-index: 1;
+}
+#videoElement {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+
+}
 .video-container{
     width: 1120px;
     display: flex;
@@ -224,13 +257,19 @@ body {
     overflow: hidden;
 }
 
-#videoElement {
-    position: absolute; /* Position absolutely within .video-stream */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
+
+#logo-holder{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-weight: 600;
+    color: #703CF0;
+    font-size: 1.2em;
+}
+
+#logo{
+    height: 35px;
+    width: 35px;
+    object-fit: cover;
+    margin-bottom: -11px;
 }

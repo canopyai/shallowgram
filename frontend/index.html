@@ -24,20 +24,27 @@
 
 <body>
 
+    <div id="logo-holder"> 
+        <img src="logo.png" alt="Canopy Labs" id="logo">
+        Canopy Labs 
+    </div>
 
     <div id="main">
-        <div id="vid-el-1">
-            <div class="video-container">
-                <div class="video-stream video-cont">
+
+
+                <div class="video-stream">
                     <video id="videoElement" height="300px" width="500px" autoplay></video>
                 </div>
-                <div class="video-stream" id="canopy-rend"> </div>
+                <div class="video-stream-big video-cont">
+    
+                  <iframe src="http://35.204.82.115/?WebRTCFPS=100&StreamerId=DefaultStreamer1" 
+                        frameborder="0" allow="camera; microphone; display-capture">
+                    </iframe>
+
             </div>
 
-        </div>
-        <div id="start" class="hiddean">
-            Start
-        </div>
+
+
 
     </div>
 
@@ -45,12 +52,12 @@
     <div id="empathy-boxes">
         <div class="empathy-controls">
             <div class="empathy-controls-title">
-                <div class="emp-title"> Empathy </div>
+                <div class="emp-title"> Control Panel</div>
             </div>
 
             <div class="emp-pill">
                 <div class="pill selected-pill" id="pill1"> </div>
-                <div class="pill" id="pill2"> </div>
+                <div class="pill selected-pill" id="pill2"> </div>
                 <div class="pill" id="pill3"> </div>
 
 
@@ -58,7 +65,7 @@
         </div>
         <div class="toggle-option">
             <div class="toggle-button" id="toggle-aud"> + Show Audio Empathy </div>
-            <div class="toggle-button"> + Show Suggested Tone </div>
+            <!-- <div class="toggle-button"> + Show Suggested Tone </div> -->
             <div class="toggle-button" id="toggle-lat"> + Show Latency </div>
 
         </div>
@@ -106,9 +113,12 @@
 
         </div>
 
+ 
 
 
-
+    </div>
+    <div id="start" class="hiddean">
+        Start
     </div>
 
 

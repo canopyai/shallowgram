@@ -1,22 +1,3 @@
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const dataSet = [{"sad":97,"neutral":3,"fear":2,"disgust":1,"anger":1}];
-
-//     createRadarChart(dataSet);
-// });
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
-
-// const remoteUrl = "http://34.32.228.101:8080/generate_animation"
-const remoteUrl = "http://localhost:8080/generate_animation"
-// 1. Set up the Scene
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75,  550/ 400, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-const startIndex = 256
-let meshes = [];
 let allDatasets = [];
 let isAudioEmpathyShowing = false;
 let audioQueue = [];
@@ -34,156 +15,20 @@ const latencies = {
 }
 let currentAudioNodes = [];
 
-renderer.setSize(550, 400);
-document.getElementById("canopy-rend").appendChild(renderer.domElement);
-let startAnimationTime = Date.now()
-let endAnimationTime = Date.now()
+let llmSocket = null
 
-// Add a basic light
-const ambientLight = new THREE.AmbientLight(0xcccccc, 1);
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(1, 1, 0).normalize();
-scene.add(directionalLight);
-
-// Add a PointLight
-const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-pointLight.position.set(5, 5, 5); // Position is x, y, z
-scene.add(pointLight);
-
-
-// 2. Load the GLB Model
-// const loader = new GLTFLoader();
-// Assuming loader.load() has already been called
-// loader.load('dd1.glb', function (gltf) {
-
-//     const object = gltf.scene;
-//     meshes = object.children[0].children
-//     const mesh = meshes[0]; // Example: working with the first mesh
-
-//     if (mesh.morphTargetDictionary) {
-//         // Iterate over the morphTargetDictionary to print names and indices
-//         for (const [name, index] of Object.entries(mesh.morphTargetDictionary)) {
-//             console.log(`${name}: ${index}`);
-//         }
-//     } else {
-//         console.log('No morph targets found on this mesh.');
-//     }
-//     scene.add(object);
-
-
-//     // Compute the bounding box after adding the model to the scene
-//     const box = new THREE.Box3().setFromObject(object);
-//     const center = box.getCenter(new THREE.Vector3());
-
-//     // Move the camera to focus on the center of the bounding box
-//     camera.position.x = center.x;
-//     camera.position.y = center.y;
-//     // Adjust the Z position based on the size of the model for a good view distance
-//     const size = box.getSize(new THREE.Vector3());
-//     const maxDim = Math.max(size.x, size.y, size.z);
-//     const fov = camera.fov * (Math.PI / 180);
-//     const cameraZ = Math.abs(maxDim / 4 * Math.tan(fov * 2));
-
-//     // Perhaps a bit far back
-//     camera.position.z = 30; // Adjust the 1.5 as needed
-
-//     // Update the camera's matrices
-//     camera.updateProjectionMatrix();
-
-//     // Point the camera to the center of the model
-//     camera.lookAt(center);
-
-//     // Update controls to rotate around the center of the model
-//     controls.target.set(center.x, center.y, center.z);
-//     controls.update();
-
-// }, undefined, function (error) {
-//     console.error(error);
-// });
-
-
-// 3. Add OrbitControls
-const controls = new OrbitControls(camera, renderer.domElement);
-
-camera.position.z = 5;
-
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-
-animate();
-
-function animateBlendShapes(animations) {
-    console.log("animations being animated", animations)
-    let currentAnimationIndex = 0;
-    startAnimationTime = Date.now()
-
-    function animateNext() {
-        if (currentAnimationIndex >= animations.length) {
-  
-            endAnimationTime = Date.now()
-            console.log('Animation time:', endAnimationTime - startAnimationTime)
-            return; // Exit if we've animated all objects in the array
-        }
-
-        const animation = animations[currentAnimationIndex];
-        // Copy initial blend shape values for each mesh
-        const initialValuesArray = meshes[0].morphTargetInfluences.slice();
-        let { targets, duration } = animation;
-        let zeros = new Array(startIndex).fill(0); // Create an array of 256 zeros
-        let updatedTargets = zeros.concat(targets); // Concatenate zeros array with the original targets array
-        targets = updatedTargets;
-
-        const startTime = performance.now();
-
-        function animate() {
-            const elapsedTime = performance.now() - startTime;
-            const progress = elapsedTime / duration;
-
-            if (progress < 1) {
-                // console.log(progress)
-                // Update each blend shape influence for each mesh based on linear interpolation
-                meshes.forEach((mesh, meshIndex) => {
-                    const initialValues = initialValuesArray;
-                    for (let i = 0; i < targets.length; i++) {
-                        mesh.morphTargetInfluences[i] = THREE.MathUtils.lerp(initialValues[i], targets[i], progress);
-                    }
-                });
-
-                requestAnimationFrame(animate); // Continue animation
-            } else {
-                // Set final values to ensure accuracy for each mesh
-                meshes.forEach((mesh, meshIndex) => {
-                    for (let i = 0; i < targets.length; i++) {
-                        mesh.morphTargetInfluences[i] = targets[i];
-                    }
-                });
-
-                currentAnimationIndex++; // Move to the next animation
-                animateNext(); // Start the next animation
-            }
-        }
-
-        animate(); // Start animating
-    }
-
-    animateNext(); // Start the animation sequence
-}
 
 async function playQueue() {
 
     if (audioQueue.length > 0) {
         const {audioData:audio, visemes} = audioQueue.shift();
 
-        animateBlendShapes(visemes);
+        // animateBlendShapes(visemes);
         
         const audioBlob = base64ToBlob(audio);
         const audioUrl = URL.createObjectURL(audioBlob);
         const audioElement = new Audio(audioUrl);
-        // currentAudioNodes.push(audioElement);
+        currentAudioNodes.push(audioElement);
         audioElement.play();
 
         audioElement.onended = () => {
@@ -248,13 +93,17 @@ document.getElementById("toggle-aud").addEventListener('click', function () {
 })
 
 async function startRecording() {
+
+    document.getElementById('start').style.opacity = '0.6';
+    document.getElementById('start').innerText = "Started Conversation..."
     startRemoteSocket();
     // Set the WebSocket route
-    const route = 'ws://34.91.82.222:8080';
+    const route = 'ws://34.91.125.203:8080';
     // const route = 'ws://127.0.0.1:8080';
 
     // Create a new WebSocket connection
     const socket = new WebSocket(route);
+
 
     // Request access to the user's microphone
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -362,7 +211,7 @@ function createElements(datasets) {
 function updateNetLatency() {
 
     let sum = 0; for (let key in latencies) { sum += latencies[key]; }
-    document.getElementById("tot-lat").innerHTML = Math.floor(sum - latencies["audio"] - latencies["transcription"]) + " ms";
+    document.getElementById("tot-lat").innerHTML = Math.floor(sum - latencies["empathy"] - latencies["audio"] - latencies["transcription"]) + " ms";
 
 
 }
@@ -370,6 +219,7 @@ async function startRemoteSocket() {
 
     const route = 'ws://34.91.59.59:8080';
     const socket = new WebSocket(route);
+    llmSocket = socket;
     socket.onmessage = async function (event) {
 
         try {
@@ -431,18 +281,18 @@ async function startRemoteSocket() {
                 window.dispatchEvent(newAnimationEvent)
 
                 console.log("audioData", conversationIndex, mainConversationIndex);
-                if (mainConversationIndex <= conversationIndex) {
-                    // audioQueue.push({
-                    //     audioData, 
-                    //     visemes
-                    // });
+                // if (mainConversationIndex <= conversationIndex) {
+                    audioQueue.push({
+                        audioData, 
+                        visemes
+                    });
                     if (!isQueuePlaying) {
                         isQueuePlaying = true;
                         // playQueue();
                     }
-                } else {
-                    console.log("skipping audio");
-                }
+                // } else {
+                //     console.log("skipping audio");
+                // }
                 
             }
             else if (messageType === "clearQueue") {
@@ -504,3 +354,37 @@ document.getElementById("toggle-lat").addEventListener("click", () => {
 
 
 
+document.getElementById("pill1").addEventListener("click", () => {
+    document.getElementById("pill1").classList.add("selected-pill")
+    document.getElementById("pill2").classList.remove("selected-pill");
+    document.getElementById("pill2").classList.remove("selected-pill");
+
+
+})
+
+document.getElementById("pill2").addEventListener("click", () => {
+    document.getElementById("pill1").classList.add("selected-pill")
+    document.getElementById("pill2").classList.add("selected-pill");
+    document.getElementById("pill3").classList.remove("selected-pill");
+    llmSocket.send(
+        JSON.stringify({
+             messageType: "audioEmpathy", 
+             data: { 
+                isAudioEmpathy: false 
+            } 
+        }));
+})
+
+document.getElementById("pill3").addEventListener("click", () => {
+    document.getElementById("pill1").classList.add("selected-pill")
+    document.getElementById("pill2").classList.add("selected-pill");
+    document.getElementById("pill3").classList.add("selected-pill");
+
+    llmSocket.send(
+        JSON.stringify({
+             messageType: "audioEmpathy", 
+             data: { 
+                isAudioEmpathy: true 
+            } 
+        }));
+})
