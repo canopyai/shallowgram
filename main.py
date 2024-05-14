@@ -10,6 +10,8 @@ import torch
 from concurrent.futures import ThreadPoolExecutor
 from longer_than_one_word import is_longer_than_one_word, is_valid_string
 from audio_emotion.get_emotion_data import get_emotion_data
+from is_longer_than_five_words import is_longer_than_five_words
+from post_accumulated_audio import post_accumulated_audio
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -129,7 +131,11 @@ async def audio_processor(websocket, path):
                                         "emotion_data": emotion_data
                                     }
 
-                                }))  
+                                }))
+                            elif (is_longer_than_five_words(transcription)):
+                                post_accumulated_audio(accumulated_audio)
+                            
+
                             else:
                                 await fsocket.send(json.dumps({
                                     "messageType": "transcription",

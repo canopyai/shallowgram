@@ -32,7 +32,7 @@ async function playQueue() {
         audioElement.play();
 
         audioElement.onended = () => {
-            // playQueue();
+            playQueue();
         }
 
 
@@ -288,7 +288,7 @@ async function startRemoteSocket() {
                     });
                     if (!isQueuePlaying) {
                         isQueuePlaying = true;
-                        // playQueue();
+                        playQueue();
                     }
                 // } else {
                 //     console.log("skipping audio");
