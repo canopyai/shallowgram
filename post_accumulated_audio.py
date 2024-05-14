@@ -7,7 +7,7 @@ api_urls = [
     'http://34.91.134.10:8080/api/v1/speaker'
 ]
 
-def post_accumulated_audio(audio_bytes, api_urls):
+def post_accumulated_audio(audio_bytes):
     print("Posting accumulated audio to the speaker processing endpoints...")
     try:
         # Encode the audio bytes to base64
@@ -36,7 +36,3 @@ def post_accumulated_audio(audio_bytes, api_urls):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Example usage
-# audio_bytes should be the byte content of your audio file
-# audio_bytes = <your_audio_bytes_here>
-# post_accumulated_audio(audio_bytes, api_urls)
