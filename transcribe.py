@@ -34,6 +34,8 @@ pipe = pipeline(
 
 def transcribe(audio_data):
 
+    print("should be id1", audio_data.shape)
+
     startTime = time.time()
     audio_input = {"array": audio_data, "sampling_rate": 16000}
     result = pipe(audio_input)
