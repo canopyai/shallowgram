@@ -10,8 +10,6 @@ endpoint = "http://34.141.193.219:8080"
 
 
 def get_emotion_data(numpy_array):
-    print("Getting emotion data")
-
     startTime = time.time()
     # Convert the numpy_array from float32 to int16
     int16_audio = (numpy_array * 32767).astype(np.int16)  # Scale float32 to int16 range
@@ -22,5 +20,4 @@ def get_emotion_data(numpy_array):
     aud_emo_data = requests.post(endpoint, files=files)
     resp_json = aud_emo_data.json()
     endTime = time.time()
-    print(f'duration is for audio int {endTime - startTime}: {resp_json}')
     return resp_json

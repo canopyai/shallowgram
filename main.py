@@ -113,15 +113,6 @@ async def audio_processor(websocket, path):
                                 emotion_data = future_emotion.result()
                                 transcription, inference_time = future_transcribe.result()
 
-                                print("Emotion Data:", emotion_data)
-                                print("Transcription:", transcription)
-                                print("Inference Time:", inference_time)
-                            
-               
-                            
-
-
-
                             if (is_longer_than_one_word(transcription) and is_valid_string(transcription) ):
 
                                 if (is_longer_than_five_words(transcription)):
