@@ -1,5 +1,6 @@
 import base64
 import requests
+import numpy as np
 
 # API URLs for the speaker processing endpoint
 api_urls = [
@@ -10,8 +11,9 @@ api_urls = [
 def post_accumulated_audio(accumulated_audio):
     print("Posting accumulated audio to the speaker processing endpoints...")
     try:
-        # Convert the accumulated_audio NumPy array to bytes
-        audio_bytes = accumulated_audio.tobytes()
+        # Convert the accumulated_audio NumPy array to int16 before converting to bytes
+        audio_int16 = accumulated_audio.astype(np.int16)
+        audio_bytes = audio_int16.tobytes()
 
         # Encode the audio bytes to Base64
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
