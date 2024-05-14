@@ -1,5 +1,5 @@
-import requests
 import base64
+import requests
 
 # API URLs for the speaker processing endpoint
 api_urls = [
@@ -7,10 +7,13 @@ api_urls = [
     'http://34.91.134.10:8080/api/v1/speaker'
 ]
 
-def post_accumulated_audio(audio_bytes):
+def post_accumulated_audio(accumulated_audio):
     print("Posting accumulated audio to the speaker processing endpoints...")
     try:
-        # Encode the audio bytes to base64
+        # Convert the accumulated_audio NumPy array to bytes
+        audio_bytes = accumulated_audio.tobytes()
+
+        # Encode the audio bytes to Base64
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
 
         # Prepare the payload
@@ -35,4 +38,3 @@ def post_accumulated_audio(audio_bytes):
 
     except Exception as e:
         print(f"An error occurred: {e}")
-
