@@ -2,6 +2,8 @@ import base64
 import numpy as np
 import wave
 import aiohttp
+import random
+import string
 
 # API URLs for the speaker processing endpoint
 api_urls = [
@@ -24,7 +26,8 @@ async def post_accumulated_audio(accumulated_audio, sample_rate=16000, num_chann
         audio_bytes = audio_int16.tobytes()
 
         # Save the audio bytes to a WAV file
-        save_audio_to_file(audio_bytes, sample_rate, num_channels, filename="accumulated_audio.wav")
+        filename = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4)) + ".wav"
+        save_audio_to_file(audio_bytes, sample_rate, num_channels, filename=filename)
 
         # Encode the audio bytes to Base64
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
