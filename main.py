@@ -46,11 +46,10 @@ confidence_threshold = 0.5
 clients = set()
 
 
-
 # create a random id for each frame
 # call the transcribe function and the text attached to that id should be processed
 
-server_uri = "ws://34.91.59.59:8080" 
+server_uri = "ws://34.91.59.59:8080"
 
 
 async def audio_processor(websocket, path):
@@ -69,9 +68,6 @@ async def audio_processor(websocket, path):
 
                 audio_buffer = np.concatenate((audio_buffer, audio_float32))
                 is_new_packet = True
-  
-
-         
 
                 while len(audio_buffer) >= BUFFER_SIZE:
                     tensor_audio = torch.from_numpy(
@@ -81,12 +77,12 @@ async def audio_processor(websocket, path):
                     confidence = vad_model(tensor_audio, 16000).item()
                     processed_time_ms += (BUFFER_SIZE / 16000) * 1000
 
-                    if(confidence> confidence_threshold):
+                    if (confidence > confidence_threshold):
                         is_speaking = True
                     else:
                         is_speaking = False
 
-                    if(is_speaking and is_new_packet):
+                    if (is_speaking and is_new_packet):
                         is_new_packet = False
                         accumulated_audio = np.concatenate(
                             (accumulated_audio, audio_float32))  # Accumulate audio data
@@ -99,36 +95,36 @@ async def audio_processor(websocket, path):
                         await fsocket.send(json.dumps({
                             "messageType": "vad",
                             "data": {
-                                "vad_type":"end", 
+                                "vad_type": "end",
                             }
                         }))
                         if len(accumulated_audio) > 0:
 
-
                             accumulated_audio_copy = accumulated_audio.copy()
                             with ThreadPoolExecutor(max_workers=2) as executor:
-                                future_emotion = executor.submit(get_emotion_data, accumulated_audio)
-                                future_transcribe = executor.submit(transcribe, accumulated_audio)
+                                future_emotion = executor.submit(
+                                    get_emotion_data, accumulated_audio)
+                                future_transcribe = executor.submit(
+                                    transcribe, accumulated_audio)
 
                                 emotion_data = future_emotion.result()
                                 transcription, inference_time = future_transcribe.result()
 
-                            if (is_longer_than_one_word(transcription) and is_valid_string(transcription) ):
+                            if (is_longer_than_one_word(transcription) and is_valid_string(transcription)):
 
-                                if (is_longer_than_five_words(transcription)):
-                                    print("beginning to post audio")
-                                    print("should be id2", accumulated_audio_copy.shape)
-                                    await post_accumulated_audio(accumulated_audio_copy)
-                                
                                 await fsocket.send(json.dumps({
                                     "messageType": "transcription",
                                     "data": {
                                         "transcription": transcription,
-                                        "inference_time": inference_time, 
+                                        "inference_time": inference_time,
                                         "emotion_data": emotion_data
                                     }
 
                                 }))
+
+                                if (is_longer_than_five_words(transcription)):
+                                    await post_accumulated_audio(accumulated_audio_copy)
+                                
 
 
                             

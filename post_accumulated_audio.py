@@ -29,12 +29,6 @@ async def post_accumulated_audio(accumulated_audio, original_sample_rate=16000, 
         # Convert the resampled_audio NumPy array to int16 before converting to bytes
         int16_audio = (resampled_audio * 32767).astype(np.int16)
         audio_bytes = int16_audio.tobytes()
-
-        # Save the audio bytes to a WAV file
-        filename = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4)) + ".wav"
-        save_audio_to_file(audio_bytes, sample_rate=target_sample_rate, num_channels=num_channels, filename=filename)
-
-        # Encode the audio bytes to Base64
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
 
         # Prepare the payload
