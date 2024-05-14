@@ -3,7 +3,7 @@ import numpy as np
 import wave
 import aiohttp
 import asyncio
-import resampy
+import librosa
 import random
 import string
 
@@ -23,8 +23,8 @@ def save_audio_to_file(audio_bytes, sample_rate=24000, num_channels=1, filename=
 async def post_accumulated_audio(accumulated_audio, original_sample_rate=16000, target_sample_rate=24000, num_channels=1):
     print("Posting accumulated audio to the speaker processing endpoints...")
     try:
-        # Resample the accumulated_audio from original_sample_rate to target_sample_rate
-        resampled_audio = resampy.resample(accumulated_audio, original_sample_rate, target_sample_rate)
+        # Resample the accumulated_audio from original_sample_rate to target_sample_rate using librosa
+        resampled_audio = librosa.resample(accumulated_audio, orig_sr=original_sample_rate, target_sr=target_sample_rate)
 
         # Convert the resampled_audio NumPy array to int16 before converting to bytes
         int16_audio = (resampled_audio * 32767).astype(np.int16)
@@ -58,3 +58,7 @@ async def post_accumulated_audio(accumulated_audio, original_sample_rate=16000, 
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
+# Example usage (replace with actual accumulated audio array)
+accumulated_audio = np.random.randn(16000).astype(np.float32)  # Example audio data
+asyncio.run(post_accumulated_audio(accumulated_audio))
