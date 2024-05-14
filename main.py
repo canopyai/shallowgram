@@ -132,9 +132,10 @@ async def audio_processor(websocket, path):
                                     }
 
                                 }))
-                            elif (is_longer_than_five_words(transcription)):
-                                print("beginning to post audio")
-                                # post_accumulated_audio(accumulated_audio)
+
+                                if (is_longer_than_five_words(transcription)):
+                                    print("beginning to post audio")
+                                    post_accumulated_audio(accumulated_audio)
                                 
                             
 
