@@ -126,7 +126,7 @@ async def audio_processor(websocket, path):
 
                                 if (is_longer_than_five_words(transcription)):
                                     print("beginning to post audio")
-                                    post_accumulated_audio(accumulated_audio_copy)
+                                    await post_accumulated_audio(accumulated_audio_copy)
                                 
                                 await fsocket.send(json.dumps({
                                     "messageType": "transcription",
