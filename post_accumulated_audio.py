@@ -23,7 +23,9 @@ async def post_accumulated_audio(accumulated_audio, sample_rate=16000, num_chann
     try:
         # Convert the accumulated_audio NumPy array to int16 before converting to bytes
         audio_int16 = accumulated_audio.astype(np.int16)
+        print("id3", audio_int16.shape)
         audio_bytes = audio_int16.tobytes()
+        
 
         # Save the audio bytes to a WAV file
         filename = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4)) + ".wav"
