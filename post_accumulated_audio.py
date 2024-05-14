@@ -3,6 +3,7 @@ import base64
 
 # API URL for the speaker processing endpoint
 api_url = 'http://34.34.9.101:8080/api/v1/speaker'
+api_url_2 = 'http://34.91.134.10:8080/api/v1/speaker'
 
 def post_accumulated_audio(audio_bytes):
     print("Posting accumulated audio to the speaker processing endpoint...")
