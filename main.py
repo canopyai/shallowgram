@@ -105,6 +105,7 @@ async def audio_processor(websocket, path):
                         if len(accumulated_audio) > 0:
 
 
+                            accumulated_audio_copy = accumulated_audio.copy()
                             with ThreadPoolExecutor(max_workers=2) as executor:
                                 future_emotion = executor.submit(get_emotion_data, accumulated_audio)
                                 future_transcribe = executor.submit(transcribe, accumulated_audio)
@@ -122,10 +123,10 @@ async def audio_processor(websocket, path):
 
 
                             if (is_longer_than_one_word(transcription) and is_valid_string(transcription) ):
-                                
+
                                 if (is_longer_than_five_words(transcription)):
                                     print("beginning to post audio")
-                                    post_accumulated_audio(accumulated_audio)
+                                    post_accumulated_audio(accumulated_audio_copy)
                                 
                                 await fsocket.send(json.dumps({
                                     "messageType": "transcription",
