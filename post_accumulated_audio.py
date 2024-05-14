@@ -4,7 +4,7 @@ import base64
 # API URL for the speaker processing endpoint
 api_url = 'http://34.34.9.101:8080/api/v1/speaker'
 
-def send_speaker_request(audio_bytes):
+def post_accumulated_audio(audio_bytes):
     try:
 
         audio_base64 = base64.b64encode(audio_bytes).decode('utf-8')
