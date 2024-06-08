@@ -98,7 +98,7 @@ async function startRecording() {
     document.getElementById('start').innerText = "Started Conversation..."
     startRemoteSocket();
     // Set the WebSocket route
-    const route = 'ws://34.91.125.203:8080';
+    const route = 'ws://34.91.97.74:8080';
     // const route = 'ws://127.0.0.1:8080';
 
     // Create a new WebSocket connection
@@ -288,7 +288,7 @@ async function startRemoteSocket() {
                     });
                     if (!isQueuePlaying) {
                         isQueuePlaying = true;
-                        playQueue();
+                        // playQueue();
                     }
                 // } else {
                 //     console.log("skipping audio");

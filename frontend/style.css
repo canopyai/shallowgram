@@ -206,17 +206,18 @@ body {
     font-weight: 500;
 }
 .video-stream-big{
-    width: 600px;
-    height: 400px;
+    width: 400px;
+    height: 600px;
     border-radius: 20px;
-    scale: 0.75;
+    scale: 1;
+    margin-left: 100px;
 
 }
 
 iframe {
     position: absolute;
-    left: -100px;
-    bottom: -175px;    /* Adjusts the vertical position to start showing from y = 100px */
+    left: -115px;
+    bottom: -145px;    /* Adjusts the vertical position to start showing from y = 100px */
     height: 400px;  /* Actual height of the iframe content */
     zoom: 6;
 }
