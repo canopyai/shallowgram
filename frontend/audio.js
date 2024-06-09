@@ -217,7 +217,7 @@ function updateNetLatency() {
 }
 async function startRemoteSocket() {
 
-    const route = 'ws://34.91.59.59:8080';
+    const route = 'ws://34.147.74.133:8080';
     const socket = new WebSocket(route);
     llmSocket = socket;
     socket.onmessage = async function (event) {
