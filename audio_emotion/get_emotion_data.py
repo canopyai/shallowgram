@@ -5,7 +5,7 @@ import io
 import time
 
 
-endpoint = "http://34.141.193.219:8080"
+endpoint = "http://34.91.234.238:8080"
 # endpoint = "http://127.0.0.1:8083"
 
 
