@@ -9,8 +9,8 @@ import string
 
 # API URLs for the speaker processing endpoint
 api_urls = [
-    'http://34.34.9.101:8080/api/v1/speaker',
-    'http://34.91.134.10:8080/api/v1/speaker'
+    'http://34.34.2.18:8080/api/v1/speaker',
+    'http://34.32.129.161:8080/api/v1/speaker'
 ]
 
 def save_audio_to_file(audio_bytes, sample_rate=24000, num_channels=1, filename="accumulated_audio.wav"):
